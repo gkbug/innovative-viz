@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Homework#4</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" />
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="js/main.js"></script>
+        <style>
+            body {
+                background-image: url('lib/stars.jpeg');
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: cover;
+            }
+
+            text{
+                font-family: sans-serif;
+            }
+            
+            .tooltip{
+                position: absolute;
+                transition: all;
+                background-color: linen;
+                padding: 5px;
+                border-radius: 5px;
+                opacity: 0;    
+            }
+            .lvs {
+                fill: none;
+                stroke: #000;
+            }
+            .grids{
+                stroke: orange ;
+            }
+            .ticks {
+                stroke: coral;
+            }
+            .pointer{
+                fill: black;
+            }
+            .group{
+                fill: rgba(172, 223, 236, 0.466);
+                stroke: black;
+                pointer-events: bounding-box;
+            }
+            #my_dataviz{
+                float:left;
+                width: 100%;
+                height: 50%;
+                margin: 30px 30px 30px 30px;
+                overflow-x: scroll;
+                overflow-y: scroll;
+                background-color: white;
+                border: 1px solid black;
+                border-radius: 8px;
+            }
+            .header {
+                padding: 30px 30px 30px 30px;
+                margin: 30px 30px 30px 30px;
+                background-color: white;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: row;
+                border: solid black 1px;
+                width: 100%;
+                height: 50%;
+                display: inline-block;
+                text-align: justify;
+                text-justify: inter-word;
+            }
+            #selector{
+                text-align:center;
+                padding: 10px 30px 10px 30px;
+                margin: 10px 10px 10px 10px;
+                fill: white;
+                float: right;
+            }
+            .heading{
+                text-anchor: middle;
+                font-size: 30px;
+                font-weight: bold;
+            }
+            #check_boxes{
+                text-align: left;
+                margin-left: 10px;
+            }
+            .yearX{
+                width: 70px;
+            }
+            h1.text-center{
+                color: white;
+            }
+            h3.text-center{
+                color: white;
+            }
+        </style>
+    </head>
+
+    <div class="container">
+        <h1 class="text-center">Homework #4: Innovative Visualisation</h1>
+        <h3 class="text-center">Gaurav C Kulkarni - gkulkar5@asu.edu</h3>
+        <div class="parent">
+            <div class="header">
+                <h4 align="center">A Brief history of Exo-planets</h4>
+                <ul>
+                    <b>Exoplanets</b> are planets that orbit stars outside our Solar System. They come in a wide range of sizes, masses, and compositions, and their location within their star's habitable zone is a key factor in determining whether a planet could potentially support life. Astronomers use several different methods to detect exoplanets, including the transit method, radial velocity method, and direct imaging. The Kepler mission, launched by NASA in 2009, provided valuable insights into the frequency and diversity of exoplanets in our galaxy. Studying the atmospheres of exoplanets is also a key area of research, as it can provide information about the planet's atmospheric conditions and potential for life.<br>
+                    This visualization is based on the <b>NASA Exoplanet Archive</b> database. It is a database that contains information on all known exoplanets (planets outside our solar system) discovered by NASA's various space missions, ground-based observatories, and other sources. The dataset includes information such as the planet's name, mass, radius, distance from its host star, orbital period, and other physical characteristics. The dataset also includes information on the host star, such as its name, mass, and radius. The archive is updated regularly as new exoplanets are discovered, and it is a valuable resource for astronomers studying the properties and distribution of exoplanets in our galaxy.
+                </ul>
+                <h4 align="center">Visualisation Description</h4>
+                <ul>
+                    <li>The visualisation represents the Exo-planets that are closest to earth i.e. within 50 Light years.</li> <li> The chart is a bubble chart plotted across the discovery year of each of the planet.Instead of the regular bubble, this vis utilises a custom glypf which is the radar/spider chart of each of the exoplanets reprsenting their radius and mass as compared to that of earth and their distance from the earth.
+                    </li>
+                    <li><b>Marks:</b> A Triangular Custom glypf within which the markers are the points.</li>
+                    <li><b>Channels:</b> Vertical location of traingular glypf indicates the discovery year, The shape of the traingle provides details about the exoplanets' features. The radar chart is plotted against 3 axes - x axis which represents its radius as compared to that of earth, y axis - which represents its mass as compared to earth and z axis - which represents the distance of the planet from earth in Light years. Each of these axes are at 120<sup>o</sup> to each other. Their distance from origin represents their value. Finally all the 3 points are connected to get the shape of the triangle.</li>
+                </ul>
+                <h4 align="center">How to read the Chart</h4>
+                <ul>
+                    <li>The chart represents over 100 exo-planets that are within the 50 Light year radius. The custom glypf/radar chart represents 3 quantitative attributes namely: the radius of the planet, the mass of the planet and the distance of the planet from earth. Further the glypfs are plotted across a vertical axis representing a categorical atttribute, the discovery year of the planet.</li> 
+                    <li> The values are normalised and drawn into a custom spider glypf. Based upon the value of radius, mass and distance, the shape of the triangle changes. Smaller sides indicate smaller values and larger sides indicate larger values. An obtuse triangle with one large side indicates that the planet properties are skewed in that direction. For e.g. a small planet very far away will have smaller sides along 60<sup>o</sup> and 120<sup>o</sup> but a very large side along 240<sup>o</sup>. Therefore the shape and size of the triangle is indicative of its properties.</li>
+                    <li>The selected year range can be changed using the input selector</li>
+                    <li>Each glypf has a tool tip which gives information about that planet</li>
+                </ul>
+            </div>
+            <div id="my_dataviz">
+                <div id="selector">
+                    <div class="heading">Select Years</div>
+                    <div id="year_cntrl">
+                        <span><b>Start</b></span>
+                        <input id="startYear" class="yearX" type="number" value="2000" autocomplete="off">
+                        <spanstyle="padding-left:12px"><b>End</b></span>
+                        <input id="endYear" class="yearX" type="number" value="2005" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end of the container div -->
+    </body>
+</html>
